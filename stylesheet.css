@@ -1,1 +1,18 @@
-
+body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+    #webcam {
+        width: 200px;
+        height: 200px;
+        background-color: gray;
+        border: 3px solid rgb(0, 106, 255);
+    }
+    #vElement{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: scaleX(-1);
+        overflow: hidden;
+    }
