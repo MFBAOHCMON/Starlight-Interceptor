@@ -2,22 +2,311 @@
 <html lang="en">
 
 <head>
-    <link rel="stylesheet" href="stylesheet.css">
+    <!-- Defines character encoding for the HTML document -->
     <meta charset="UTF-8">
+    <!-- Ensures proper scaling and rendering on mobile and desktop viewports -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Starlight Interceptor</title>
+    <title>Three.js Space Shooter Practice</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;1,400&display=swap" rel="stylesheet">
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding:
+                0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .title h1 {
+            font-size: 36px;
+            font-family: 'Lato', sans-serif;
+            margin-top: 10em;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+
+            /* Styling the text and giving it gradient */
+            color: #ffffff;
+            background: -webkit-linear-gradient(#eee, #333);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 6px 6px 0px rgba(0, 0, 0, 0.2);
+
+            /* Make sure text is in front of background images */
+            display: block;
+            position: relative;
+            z-index: 3;
+        }
+
+        @keyframes move-twinkle-back {
+            from {
+                background-position: 0 0;
+            }
+
+            to {
+                background-position: -10000px 5000px;
+            }
+        }
+
+        @keyframes move-clouds-back {
+            from {
+                background-position: 0 0;
+            }
+
+            to {
+                background-position: 10000px 0;
+            }
+        }
+
+        .stars,
+        .twinkling,
+        .clouds {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100vw;
+            height: 100vh;
+            display: block;
+            pointer-events: none;
+        }
+
+        .stars {
+            background: #000 url(stars.png) repeat top center;
+            z-index: 0;
+        }
+
+        .twinkling {
+            background: transparent url(twinkling.png) repeat top center;
+            z-index: 1;
+            animation: move-twinkle-back 200s linear infinite;
+        }
+
+        .clouds {
+            background: transparent url(clouds.png) repeat top center;
+            z-index: 2;
+            opacity: .4;
+            animation: move-clouds-back 200s linear infinite;
+        }
+
+        /* Make Three.js canvas sit above background effects but behind any UI */
+        canvas {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 3;
+            pointer-events: auto;
+        }
+    </style>
 </head>
+
 <body>
+    <!-- Background layers -->
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+    <div class="clouds"></div>
+    <div class="title">
+        <h1></h1>
+    </div>
 
-<div id = "webcam">
-    <video autoplay="true" id="vElement"></video>
-</div>
+    <!-- Loads the Three.js r102 library from a CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/102/three.js"></script>
 
-<script>
-    navigator.mediaDevices.getUserMedia({video: true})
-        .then(stream => document.querySelector("#vElement").srcObject = stream);
-</script> 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/102/three.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenMax.min.js"></script>
+    <script>
+        // Store the browser window's current width and height
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+
+        // 1. SCENE SETUP
+        // Create the main 3D world container where all objects live
+        const scene = new THREE.Scene();
+
+        // Create a perspective camera (FOV, aspect ratio, near clipping plane, far clipping plane)
+        const camera = new THREE.PerspectiveCamera(75, w / h, 0.1, 1000);
+        // Position the camera slightly back and up to view the space field
+        camera.position.set(0, 3, 10);
+
+        // Initialize the WebGL renderer with anti-aliasing and alpha transparency so the CSS background shows through
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        // Set the renderer size to match the browser window dimensions
+        renderer.setSize(w, h);
+        // Append the renderer canvas element into the HTML document body
+        document.body.appendChild(renderer.domElement);
+
+        // Bright ambient light to ensure no side is pitch black
+        const light = new THREE.AmbientLight("#ffffff", 1.5);
+        scene.add(light);
+
+        // Hemisphere light to illuminate from top and bottom seamlessly
+        const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 1.5);
+        hemiLight.position.set(0, 200, 0);
+        scene.add(hemiLight);
+
+        // Directional light to cast highlights across the rocks
+        const dirLight = new THREE.DirectionalLight("#ffffff", 1.5);
+        dirLight.position.set(5, 10, 7);
+        scene.add(dirLight);
+
+        // 2. TEXTURES LOADER & ASTEROID BLUEPRINT
+        // Instantiate the TextureLoader utility to load image files
+        const textureLoader = new THREE.TextureLoader();
+
+        // Load individual texture maps for surface color, normals, height/displacement, roughness, and occlusion
+        const tilesBaseColor = textureLoader.load('./picture/Cobblestone_Irregular_Floor_001_basecolor.png');
+        const tilesNormalMap = textureLoader.load("./picture/Cobblestone_Irregular_Floor_001_normal.png");
+        const tilesHeightMap = textureLoader.load("./picture/Cobblestone_Irregular_Floor_001_height.png");
+        const tilesRoughnessMap = textureLoader.load("./picture/Cobblestone_Irregular_Floor_001_roughness.png");
+        const tilesAmbientOcclusionMap = textureLoader.load("./picture/Cobblestone_Irregular_Floor_001_ambientOcclusion.png");
+
+        // Base geometry size set to 5 for large asteroids
+        const asteroidGeometry = new THREE.DodecahedronGeometry(5, 1);
+        // Create a physical material that maps our textures and details onto the geometry
+        const asteroidMaterial = new THREE.MeshStandardMaterial({
+            map: tilesBaseColor,
+            normalMap: tilesNormalMap,
+            displacementMap: tilesHeightMap,
+            displacementScale: 0.6,
+            roughnessMap: tilesRoughnessMap,
+            roughness: 0.8, // Fixed from 100 (Three.js range is 0 to 1) so it doesn't render completely black
+            aoMap: tilesAmbientOcclusionMap
+        });
+
+        // 3. GAME ENGINE VARIABLES
+        // Array to store and track all active asteroid objects currently in the scene
+        const asteroids = [];
+        // Timer counter used to control when the next asteroid should spawn
+        let spawnTimer = 0;
+        // Frame interval count between each new asteroid spawn
+        const SPAWN_INTERVAL = 25;
+
+        // Function to generate and place a new random asteroid into the world
+        function spawnAsteroid() {
+            // Combine our geometry blueprint and material into a renderable 3D mesh object
+            const mesh = new THREE.Mesh(asteroidGeometry, asteroidMaterial);
+
+            // Scale multipliers for size variety
+            const scale = 1.5 + Math.random() * 2.0;
+            // Apply random unequal scaling across X, Y, and Z to make rocks look unique/jagged
+            mesh.scale.set(
+                scale * (0.8 + Math.random() * 0.4),
+                scale * (0.8 + Math.random() * 0.4),
+                scale * (0.8 + Math.random() * 0.4)
+            );
+
+            // Spherical coordinate math variables to spawn rocks in an even wider shell around the camera
+            const u = Math.random();
+            const v = Math.random();
+            const theta = u * 2.0 * Math.PI; // Azimuthal angle (0 to 360 degrees)
+            const phi = Math.acos(2.0 * v - 1.0); // Polar angle mapped uniformly across a sphere
+            const r = 200 + Math.random() * 100; // Increased radius distance range so they spawn much further out
+
+            // Calculate and set the initial 3D position using spherical-to-cartesian coordinate conversion
+            mesh.position.set(
+                camera.position.x + r * Math.sin(phi) * Math.cos(theta),
+                camera.position.y + r * Math.sin(phi) * Math.sin(theta),
+                camera.position.z + r * Math.cos(phi)
+            );
+
+            // Add the newly created asteroid mesh to the active Three.js scene
+            scene.add(mesh);
+
+            // Generate a random vector direction and normalize it to a length of 1
+            const randomDirection = new THREE.Vector3(
+                (Math.random() - 0.5),
+                (Math.random() - 0.5),
+                (Math.random() - 0.5)
+            ).normalize();
+
+            // Speed values for the asteroids
+            const speed = 0.15 + Math.random() * 0.2;
+
+            // Rotation speed values so they tumble as they move
+            const rotSpeed = new THREE.Vector3(
+                (Math.random() - 0.5) * 0.015,
+                (Math.random() - 0.5) * 0.015,
+                (Math.random() - 0.5) * 0.015
+            );
+
+            // 3600 frames = 60 seconds (1 minute) at 60 FPS
+            const maxFrames = 3600;
+
+            // Push the asteroid object data package into our active tracking array
+            asteroids.push({
+                mesh: mesh,
+                velocity: randomDirection.multiplyScalar(speed),
+                rotSpeed: rotSpeed,
+                age: 0,
+                maxAge: maxFrames
+            });
+        }
+
+        // 4. CORE GAME ANIMATION LOOP
+        function animate() {
+            // Increment the spawn timer counter every frame
+            spawnTimer++;
+            // Check if enough frames have passed to spawn a new asteroid
+            if (spawnTimer >= SPAWN_INTERVAL) {
+                spawnAsteroid(); // Call function to spawn a rock
+                spawnTimer = 0;  // Reset timer back to zero
+            }
+
+            // --- ASTEROID LIFECYCLE & MOVEMENT MANAGEMENT ---
+            // Loop backwards through the active asteroids array safely for cleanup/updates
+            for (let i = asteroids.length - 1; i >= 0; i--) {
+                const asteroid = asteroids[i];
+
+                // Add velocity vector to update the asteroid's position each frame
+                asteroid.mesh.position.add(asteroid.velocity);
+
+                // Apply tumbling rotation increments to X, Y, and Z axes
+                asteroid.mesh.rotation.x += asteroid.rotSpeed.x;
+                asteroid.mesh.rotation.y += asteroid.rotSpeed.y;
+                asteroid.mesh.rotation.z += asteroid.rotSpeed.z;
+
+                // Increment the individual asteroid's frame age counter
+                asteroid.age++;
+
+                // Safety check: close-range collision threshold 
+                if (asteroid.mesh.position.distanceTo(camera.position) < 8.0) {
+                    scene.remove(asteroid.mesh); // Remove mesh from Three.js scene
+                    asteroids.splice(i, 1);    // Remove item from tracking array
+                    continue;
+                }
+
+                // Time-based cleanup: delete the asteroid if it has existed for 1 full minute (3600 frames)
+                if (asteroid.age >= asteroid.maxAge) {
+                    scene.remove(asteroid.mesh); // Remove mesh from Three.js scene
+                    asteroids.splice(i, 1);    // Remove item from tracking array
+                    continue;
+                }
+
+                // Distance-based backup cleanup: if an asteroid drifts past 1500 units, delete it
+                if (asteroid.mesh.position.distanceTo(camera.position) > 1500) {
+                    scene.remove(asteroid.mesh); // Remove mesh from Three.js scene
+                    asteroids.splice(i, 1);    // Remove item from tracking array
+                }
+            }
+
+            // Render the 3D scene from the perspective of the camera
+            renderer.render(scene, camera);
+        }
+
+        // Start the continuous browser animation loop calling the animate function every frame
+        renderer.setAnimationLoop(animate);
+
+        // Event listener to dynamically update aspect ratio and renderer size if the browser window is resized
+        window.addEventListener('resize', () => {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            camera.aspect = width / height;   // Update camera aspect ratio
+            camera.updateProjectionMatrix();  // Apply changes to camera projection matrix
+            renderer.setSize(width, height);  // Resize renderer viewport dimensions
+        });
+    </script>
 </body>
+
 </html>
