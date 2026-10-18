@@ -879,6 +879,203 @@
         let isGameOver = false;
         let isInMenu = true;
 
+        // ================================================
+        // SHOOTING SYSTEM WITH BULLET CAPACITY AND RELOAD
+        // ================================================
+        let bullets = [];
+        let isShooting = false;
+        let lastShotTime = 0;
+
+        const SHOT_INTERVAL = 120;
+        const BULLET_SPEED = 7;
+        const BULLET_LIFETIME = 100;
+
+        const BULLET_CAPACITY = 20;
+        const RELOAD_COOLDOWN = 1800;
+
+        let bulletsRemaining = BULLET_CAPACITY;
+        let isReloading = false;
+        let reloadTimeout = null;
+
+        const ammoHud = document.createElement("div");
+        ammoHud.style.position = "fixed";
+        ammoHud.style.left = "50%";
+        ammoHud.style.bottom = "24px";
+        ammoHud.style.transform = "translateX(-50%)";
+        ammoHud.style.zIndex = "60";
+        ammoHud.style.padding = "10px 18px";
+        ammoHud.style.border = "1px solid rgba(64, 244, 255, 0.7)";
+        ammoHud.style.borderRadius = "8px";
+        ammoHud.style.background = "rgba(8, 10, 18, 0.8)";
+        ammoHud.style.color = "#40f4ff";
+        ammoHud.style.fontFamily = "'DM Sans', sans-serif";
+        ammoHud.style.fontSize = "16px";
+        ammoHud.style.fontWeight = "700";
+        ammoHud.style.letterSpacing = "2px";
+        ammoHud.style.textAlign = "center";
+        ammoHud.style.pointerEvents = "none";
+        ammoHud.style.display = "none";
+        document.body.appendChild(ammoHud);
+
+        function updateAmmoDisplay() {
+            if (isReloading) {
+                ammoHud.textContent = "RELOADING...";
+                ammoHud.style.color = "#ffb347";
+                ammoHud.style.borderColor = "rgba(255, 179, 71, 0.8)";
+            } else {
+                ammoHud.textContent =
+                    "AMMO: " + bulletsRemaining + " / " + BULLET_CAPACITY;
+                ammoHud.style.color = "#40f4ff";
+                ammoHud.style.borderColor = "rgba(64, 244, 255, 0.7)";
+            }
+        }
+
+        function startReload() {
+            if (isReloading || isGameOver || isInMenu) return;
+
+            isReloading = true;
+            updateAmmoDisplay();
+
+            reloadTimeout = window.setTimeout(function () {
+                bulletsRemaining = BULLET_CAPACITY;
+                isReloading = false;
+                reloadTimeout = null;
+                updateAmmoDisplay();
+            }, RELOAD_COOLDOWN);
+        }
+
+        function resetAmmo() {
+            if (reloadTimeout !== null) {
+                window.clearTimeout(reloadTimeout);
+                reloadTimeout = null;
+            }
+
+            bulletsRemaining = BULLET_CAPACITY;
+            isReloading = false;
+            updateAmmoDisplay();
+        }
+
+        const bulletGeometry = new THREE.CylinderGeometry(
+            0.045, 0.045, 1.4, 6
+        );
+
+        const bulletMaterial = new THREE.MeshBasicMaterial({
+            color: 0xffff00
+        });
+
+        function shootBullet() {
+            if (isInMenu || isGameOver || isReloading) return;
+
+            if (bulletsRemaining <= 0) {
+                startReload();
+                return;
+            }
+
+            ship.updateMatrixWorld(true);
+
+            const bullet = new THREE.Mesh(
+                bulletGeometry,
+                bulletMaterial
+            );
+
+            const bulletPosition = new THREE.Vector3(0, 0, -5);
+            ship.localToWorld(bulletPosition);
+            bullet.position.copy(bulletPosition);
+
+            const direction = new THREE.Vector3(0, 0, -1)
+                .applyQuaternion(ship.getWorldQuaternion(new THREE.Quaternion()))
+                .normalize();
+
+            bullet.quaternion.setFromUnitVectors(
+                new THREE.Vector3(0, 1, 0),
+                direction
+            );
+
+            scene.add(bullet);
+
+            bullets.push({
+                mesh: bullet,
+                velocity: direction.multiplyScalar(BULLET_SPEED),
+                age: 0
+            });
+
+            bulletsRemaining--;
+            updateAmmoDisplay();
+
+            if (bulletsRemaining === 0) {
+                startReload();
+            }
+        }
+
+        function updateBullets() {
+            for (let i = bullets.length - 1; i >= 0; i--) {
+                const bullet = bullets[i];
+
+                bullet.mesh.position.add(bullet.velocity);
+                bullet.age++;
+
+                let hitAsteroid = false;
+
+                for (let j = asteroids.length - 1; j >= 0; j--) {
+                    const asteroid = asteroids[j];
+
+                    const distance = bullet.mesh.position.distanceTo(
+                        asteroid.mesh.position
+                    );
+
+                    const asteroidRadius = 5 * Math.max(
+                        asteroid.mesh.scale.x,
+                        asteroid.mesh.scale.y,
+                        asteroid.mesh.scale.z
+                    );
+
+                    if (distance < asteroidRadius + 0.7) {
+                        scene.remove(asteroid.mesh);
+                        asteroids.splice(j, 1);
+                        hitAsteroid = true;
+                        break;
+                    }
+                }
+
+                if (hitAsteroid || bullet.age >= BULLET_LIFETIME) {
+                    scene.remove(bullet.mesh);
+                    bullets.splice(i, 1);
+                }
+            }
+        }
+
+        function clearBullets() {
+            for (let i = bullets.length - 1; i >= 0; i--) {
+                scene.remove(bullets[i].mesh);
+            }
+
+            bullets = [];
+            isShooting = false;
+            resetAmmo();
+        }
+
+        // Hold the left mouse button on the game canvas to shoot.
+        renderer.domElement.addEventListener("pointerdown", function (event) {
+            if (event.button !== 0 || isInMenu || isGameOver) return;
+
+            isShooting = true;
+            shootBullet();
+            lastShotTime = performance.now();
+        });
+
+        // Stop shooting when the mouse button is released.
+        window.addEventListener("pointerup", function () {
+            isShooting = false;
+        });
+
+        window.addEventListener("pointercancel", function () {
+            isShooting = false;
+        });
+
+        window.addEventListener("blur", function () {
+            isShooting = false;
+        });
+
         function spawnAsteroid() {
             const mesh = new THREE.Mesh(asteroidGeometry, asteroidMaterial);
             const scale = 1.5 + Math.random() * 2;
@@ -1224,7 +1421,6 @@
                 }
             }
 
-
             // The ship always moves forward.
             ship.translateZ(-1);
 
@@ -1234,6 +1430,14 @@
             if (keys.s || webcamKeys.s) ship.rotateX(-0.02);
             if (keys.d || webcamKeys.d) ship.rotateZ(-0.02);
 
+            // Keep firing while the mouse button is held down.
+            if (isShooting && performance.now() - lastShotTime >= SHOT_INTERVAL) {
+                shootBullet();
+                lastShotTime = performance.now();
+            }
+
+            updateBullets();
+
             renderer.render(scene, camera);
         }
 
@@ -1242,6 +1446,7 @@
         // ================================================
         function triggerGameOver() {
             isGameOver = true;
+            isShooting = false;
             resetWebcamKeys();
             resetKeys();
             document.getElementById("gameover-screen").style.display = "flex";
@@ -1251,7 +1456,9 @@
             asteroids.forEach(asteroid => scene.remove(asteroid.mesh));
 
             asteroids = [];
+            clearBullets();
             spawnTimer = 0;
+            lastShotTime = 0;
             isGameOver = false;
 
             document.getElementById("gameover-screen").style.display = "none";
@@ -1297,7 +1504,10 @@
 
             document.getElementById("gameover-screen").style.display = "none";
             menuToggle.style.display = "flex";
+            ammoHud.style.display = "block";
 
+            clearBullets();
+            updateAmmoDisplay();
             resetKeys();
             resetWebcamKeys();
 
@@ -1308,6 +1518,10 @@
         function returnToMainMenu() {
             isInMenu = true;
             isGameOver = false;
+            isShooting = false;
+
+            clearBullets();
+            ammoHud.style.display = "none";
 
             document.getElementById("gameover-screen").style.display = "none";
 
@@ -1338,7 +1552,7 @@
             setNavigationOpen(false);
 
             window.alert(
-                "Star Interceptor: pilot your starfighter, dodge incoming asteroids, and survive as long as you can. Use W, A, S, D or move a red object in front of your webcam to steer. Your ship always moves forward."
+                "Star Interceptor: pilot your starfighter, dodge incoming asteroids, and survive as long as you can. Use W, A, S, D or move a red object in front of your webcam to steer. Hold the left mouse button to shoot yellow bullets. You have 8 bullets per reload, with a 1.8-second reload cooldown. Your ship always moves forward."
             );
         }
 
