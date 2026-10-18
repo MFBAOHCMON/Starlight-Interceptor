@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Star Interceptor</title>
-
     <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;1,400&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,21 +19,31 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            font-family: 'Lato', sans-serif;
+            font-family: 'Lato', sans-serif
         }
 
         body {
-            background-color: #080a12;
+            background: #080a12
         }
 
         @keyframes move-twinkle-back {
-            from { background-position: 0 0; }
-            to { background-position: -10000px 5000px; }
+            from {
+                background-position: 0 0
+            }
+
+            to {
+                background-position: -10000px 5000px
+            }
         }
 
         @keyframes move-clouds-back {
-            from { background-position: 0 0; }
-            to { background-position: 10000px 0; }
+            from {
+                background-position: 0 0
+            }
+
+            to {
+                background-position: 10000px 0
+            }
         }
 
         .stars,
@@ -45,25 +54,24 @@
             width: 100vw;
             height: 100vh;
             display: block;
-            pointer-events: none;
+            pointer-events: none
         }
 
         .stars {
             background: #000 url(stars.png) repeat top center;
-            z-index: 0;
+            z-index: 0
         }
 
         .twinkling {
             background: transparent url(twinkling.png) repeat top center;
             z-index: 1;
-            animation: move-twinkle-back 200s linear infinite;
         }
 
         .clouds {
             background: transparent url(clouds.png) repeat top center;
             z-index: 2;
             opacity: .4;
-            animation: move-clouds-back 200s linear infinite;
+            animation: move-clouds-back 200s linear infinite
         }
 
         canvas {
@@ -72,17 +80,16 @@
             top: 0;
             left: 0;
             z-index: 3;
-            pointer-events: auto;
+            pointer-events: auto
         }
 
         :root {
             --menu-font-body: 'DM Sans', sans-serif;
             --menu-font-display: 'Bebas Neue', sans-serif;
             --menu-accent: #ff3b00;
-            --menu-bg: #080a12;
+            --menu-bg: #080a12
         }
 
-        /* MAIN MENU */
         #menu-home {
             position: fixed;
             inset: 0;
@@ -95,10 +102,8 @@
             text-align: center;
             color: #f0f0f4;
             font-family: var(--menu-font-body);
-            background:
-                radial-gradient(ellipse at 50% 40%, rgba(28, 65, 115, .45), transparent 55%),
-                linear-gradient(135deg, rgba(4, 7, 17, .96), rgba(10, 13, 25, .92));
-            overflow: hidden;
+            background: radial-gradient(ellipse at 50% 40%, rgba(28, 65, 115, .45), transparent 55%), linear-gradient(135deg, rgba(4, 7, 17, .96), rgba(10, 13, 25, .92));
+            overflow: hidden
         }
 
         #menu-home::before {
@@ -107,30 +112,38 @@
             inset: -50%;
             pointer-events: none;
             opacity: .35;
-            background-image:
-                radial-gradient(2px 2px at 20% 30%, #fff 50%, transparent 60%),
-                radial-gradient(1px 1px at 70% 20%, #7ddcff 50%, transparent 60%),
-                radial-gradient(2px 2px at 80% 70%, #fff 50%, transparent 60%),
-                radial-gradient(1px 1px at 35% 80%, #9bbcff 50%, transparent 60%);
+            background-image: radial-gradient(2px 2px at 20% 30%, #fff 50%, transparent 60%), radial-gradient(1px 1px at 70% 20%, #7ddcff 50%, transparent 60%), radial-gradient(2px 2px at 80% 70%, #fff 50%, transparent 60%), radial-gradient(1px 1px at 35% 80%, #9bbcff 50%, transparent 60%);
             background-size: 260px 240px, 310px 300px, 370px 330px, 220px 280px;
-            animation: menu-stars-drift 55s linear infinite;
+            animation: menu-stars-drift 55s linear infinite
         }
 
         @keyframes menu-stars-drift {
-            from { transform: translate3d(0, 0, 0); }
-            to { transform: translate3d(-120px, 80px, 0); }
+            from {
+                transform: translate3d(0, 0, 0)
+            }
+
+            to {
+                transform: translate3d(-120px, 80px, 0)
+            }
         }
 
         .menu-hero {
             position: relative;
             z-index: 1;
             width: min(100%, 1000px);
-            animation: menu-hero-in .8s cubic-bezier(.2, .8, .2, 1) both;
+            animation: menu-hero-in .8s cubic-bezier(.2, .8, .2, 1) both
         }
 
         @keyframes menu-hero-in {
-            from { opacity: 0; transform: translateY(22px) scale(.985); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+            from {
+                opacity: 0;
+                transform: translateY(22px) scale(.985)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1)
+            }
         }
 
         .menu-eyebrow {
@@ -139,7 +152,7 @@
             font-size: .72rem;
             font-weight: 700;
             letter-spacing: .34em;
-            text-transform: uppercase;
+            text-transform: uppercase
         }
 
         .menu-hero h1 {
@@ -149,13 +162,13 @@
             line-height: .82;
             letter-spacing: .015em;
             color: #f6f8ff;
-            text-shadow: 0 0 38px rgba(60, 157, 255, .18);
+            text-shadow: 0 0 38px rgba(60, 157, 255, .18)
         }
 
         .menu-hero h1 span {
             display: block;
             color: transparent;
-            -webkit-text-stroke: 1.5px #8db7ef;
+            -webkit-text-stroke: 1.5px #8db7ef
         }
 
         .menu-description {
@@ -163,7 +176,7 @@
             margin: 1.8rem auto 2rem;
             color: #a9b4c6;
             font-size: clamp(.95rem, 2vw, 1.08rem);
-            line-height: 1.8;
+            line-height: 1.8
         }
 
         .menu-actions {
@@ -171,7 +184,7 @@
             justify-content: center;
             flex-wrap: wrap;
             gap: .9rem;
-            margin-bottom: 2.25rem;
+            margin-bottom: 2.25rem
         }
 
         .menu-action {
@@ -185,27 +198,26 @@
             letter-spacing: .12em;
             text-transform: uppercase;
             cursor: pointer;
-            transition: transform .25s ease, background .25s ease,
-                border-color .25s ease, box-shadow .25s ease;
+            transition: transform .25s ease, background .25s ease, border-color .25s ease, box-shadow .25s ease
         }
 
         .menu-action:hover {
             transform: translateY(-3px);
             background: rgba(43, 90, 151, .72);
             border-color: #8dc7ff;
-            box-shadow: 0 10px 35px rgba(20, 122, 255, .18);
+            box-shadow: 0 10px 35px rgba(20, 122, 255, .18)
         }
 
         .menu-action.primary {
             background: #ff3b00;
             border-color: #ff3b00;
-            box-shadow: 0 8px 28px rgba(255, 59, 0, .2);
+            box-shadow: 0 8px 28px rgba(255, 59, 0, .2)
         }
 
         .menu-action.primary:hover {
             background: #ff5726;
             border-color: #ff5726;
-            box-shadow: 0 10px 38px rgba(255, 59, 0, .32);
+            box-shadow: 0 10px 38px rgba(255, 59, 0, .32)
         }
 
         .menu-preview {
@@ -214,7 +226,7 @@
             gap: .7rem;
             width: min(100%, 760px);
             margin: 0 auto;
-            opacity: .75;
+            opacity: .75
         }
 
         .menu-preview div {
@@ -222,19 +234,18 @@
             border: 1px solid rgba(144, 183, 237, .18);
             border-radius: 10px;
             background: linear-gradient(135deg, rgba(79, 112, 157, .25), rgba(14, 25, 44, .4));
-            box-shadow: inset 0 1px rgba(255, 255, 255, .04);
+            box-shadow: inset 0 1px rgba(255, 255, 255, .04)
         }
 
         .menu-preview div:nth-child(2),
         .menu-preview div:nth-child(4) {
-            background: linear-gradient(135deg, rgba(255, 75, 25, .16), rgba(17, 29, 50, .45));
+            background: linear-gradient(135deg, rgba(255, 75, 25, .16), rgba(17, 29, 50, .45))
         }
 
         #menu-home[hidden] {
-            display: none;
+            display: none
         }
 
-        /* HAMBURGER BUTTON */
         #menu-toggle {
             position: fixed;
             top: 1.5rem;
@@ -252,12 +263,12 @@
             justify-content: center;
             gap: 5px;
             box-shadow: 0 4px 24px rgba(0, 0, 0, .3);
-            transition: background .3s, transform .3s;
+            transition: background .3s, transform .3s
         }
 
         #menu-toggle:hover {
             background: var(--menu-accent);
-            transform: scale(1.06);
+            transform: scale(1.06)
         }
 
         #menu-toggle span {
@@ -266,23 +277,22 @@
             height: 2px;
             background: #fff;
             border-radius: 2px;
-            transition: transform .4s cubic-bezier(.7, 0, .2, 1), opacity .3s, width .3s;
+            transition: transform .4s cubic-bezier(.7, 0, .2, 1), opacity .3s, width .3s
         }
 
         #menu-toggle.is-open span:nth-child(1) {
-            transform: translateY(7px) rotate(45deg);
+            transform: translateY(7px) rotate(45deg)
         }
 
         #menu-toggle.is-open span:nth-child(3) {
-            transform: translateY(-7px) rotate(-45deg);
+            transform: translateY(-7px) rotate(-45deg)
         }
 
         #menu-toggle.is-open span:nth-child(2) {
             opacity: 0;
-            width: 0;
+            width: 0
         }
 
-        /* ANIMATED NAVIGATION OVERLAY */
         #menu-overlay {
             position: fixed;
             inset: 0;
@@ -294,13 +304,13 @@
             background: var(--menu-bg);
             clip-path: circle(0% at calc(100% - 3.125rem) 3.125rem);
             transition: clip-path .75s cubic-bezier(.76, 0, .24, 1);
-            visibility: hidden;
+            visibility: hidden
         }
 
         #menu-overlay.is-open {
             clip-path: circle(170% at calc(100% - 3.125rem) 3.125rem);
             pointer-events: auto;
-            visibility: visible;
+            visibility: visible
         }
 
         .menu-inner {
@@ -311,7 +321,7 @@
             width: min(100% - 4rem, 1200px);
             margin: 0 auto;
             padding: 5rem 0 3rem;
-            box-sizing: border-box;
+            box-sizing: border-box
         }
 
         .menu-label {
@@ -323,12 +333,12 @@
             text-transform: uppercase;
             opacity: 0;
             transform: translateY(10px);
-            transition: opacity .5s, transform .5s;
+            transition: opacity .5s, transform .5s
         }
 
         #menu-overlay.is-open .menu-label {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0)
         }
 
         .menu-nav {
@@ -336,23 +346,23 @@
             flex-direction: column;
             list-style: none;
             margin: 0;
-            padding: 1rem 0;
+            padding: 1rem 0
         }
 
         .menu-item {
             overflow: hidden;
-            border-top: 1px solid #202635;
+            border-top: 1px solid #202635
         }
 
         .menu-item:last-child {
-            border-bottom: 1px solid #202635;
+            border-bottom: 1px solid #202635
         }
 
         .menu-link-wrap {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: .25rem 0;
+            padding: .25rem 0
         }
 
         .menu-link {
@@ -365,23 +375,23 @@
             letter-spacing: .02em;
             text-decoration: none;
             transform: translateY(110%);
-            transition: transform .7s cubic-bezier(.76, 0, .24, 1), color .25s;
+            transition: transform .7s cubic-bezier(.76, 0, .24, 1), color .25s
         }
 
         #menu-overlay.is-open .menu-link {
-            transform: translateY(0);
+            transform: translateY(0)
         }
 
         #menu-overlay.is-open .menu-link#about-menu-link {
-            transition-delay: .1s;
+            transition-delay: .1s
         }
 
         #menu-overlay.is-open .menu-link#play-menu-link {
-            transition-delay: .2s;
+            transition-delay: .2s
         }
 
         .menu-link:hover {
-            color: var(--menu-accent);
+            color: var(--menu-accent)
         }
 
         .menu-link::after {
@@ -393,11 +403,11 @@
             height: 3px;
             border-radius: 2px;
             background: var(--menu-accent);
-            transition: width .35s cubic-bezier(.76, 0, .24, 1);
+            transition: width .35s cubic-bezier(.76, 0, .24, 1)
         }
 
         .menu-link:hover::after {
-            width: 100%;
+            width: 100%
         }
 
         .menu-number {
@@ -408,41 +418,40 @@
             letter-spacing: .15em;
             opacity: 0;
             transform: translateY(10px);
-            transition: transform .4s, opacity .4s;
+            transition: transform .4s, opacity .4s
         }
 
         #menu-overlay.is-open .menu-number {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0)
         }
 
         #menu-overlay.is-open .menu-item:nth-child(1) .menu-number {
-            transition-delay: .1s;
+            transition-delay: .1s
         }
 
         #menu-overlay.is-open .menu-item:nth-child(2) .menu-number {
-            transition-delay: .2s;
+            transition-delay: .2s
         }
 
-        /* GAME OVER SCREEN */
         #gameover-screen {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, .85);
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 100;
-            display: none;
+            display: none
         }
 
         #gameover-screen h1 {
             color: #ff4266;
             font-size: 55px;
             margin-bottom: 20px;
-            text-shadow: 0 0 20px rgba(255, 66, 102, 0.6);
+            text-shadow: 0 0 20px rgba(255, 66, 102, .6);
             letter-spacing: 2px;
-            font-family: 'Lato', sans-serif;
+            font-family: 'Lato', sans-serif
         }
 
         #restart-btn {
@@ -455,61 +464,30 @@
             font-weight: bold;
             border-radius: 8px;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(40, 107, 255, 0.4);
-            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(40, 107, 255, .4);
+            transition: all .2s ease
         }
 
         #restart-btn:hover {
             transform: scale(1.05);
             background: linear-gradient(135deg, #3d7aff, #286bff);
-            box-shadow: 0 6px 20px rgba(40, 107, 255, 0.6);
-        }
-
-        @media (max-width: 600px) {
-            #menu-home {
-                padding: 1.25rem;
-                box-sizing: border-box;
-            }
-
-            .menu-preview {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-
-            .menu-inner {
-                width: calc(100% - 2.5rem);
-            }
-
-            #menu-toggle {
-                top: 1rem;
-                right: 1rem;
-            }
-
-            #gameover-screen h1 {
-                font-size: 42px;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: .01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: .01ms !important;
-                scroll-behavior: auto !important;
-            }
+            box-shadow: 0 6px 20px rgba(40, 107, 255, .6)
         }
 
         #Webcam {
             position: fixed;
             top: 20px;
             left: 20px;
-            width: 150px;
-            height: 150px;
-            background-color: gray;
-            border: 5px solid rgb(0, 72, 255);
+            width: 160px;
+            height: 120px;
+            background: transparent;
+            border: none;
+            border-radius: 0;
             z-index: 99999;
             display: none;
             overflow: hidden;
-            box-sizing: content-box;
+            box-sizing: border-box;
+            box-shadow: none;
         }
 
         #VElement {
@@ -517,7 +495,54 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transform: scaleX(-1);
+            transform: scaleX(-1)
+        }
+
+        #tracking-status {
+            display: none;
+        }
+
+        @media(max-width:600px) {
+            #menu-home {
+                padding: 1.25rem;
+                box-sizing: border-box
+            }
+
+            .menu-preview {
+                grid-template-columns: repeat(2, minmax(0, 1fr))
+            }
+
+            .menu-inner {
+                width: calc(100% - 2.5rem)
+            }
+
+            #menu-toggle {
+                top: 1rem;
+                right: 1rem
+            }
+
+            #gameover-screen h1 {
+                font-size: 42px
+            }
+
+            #Webcam {
+                width: 130px;
+                height: 125px;
+                top: 10px;
+                left: 10px
+            }
+        }
+
+        @media(prefers-reduced-motion:reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .01ms !important;
+                scroll-behavior: auto !important
+            }
         }
     </style>
 </head>
@@ -526,23 +551,19 @@
 
     <div id="Webcam">
         <video autoplay muted playsinline id="VElement"></video>
+        <div id="tracking-status">CAMERA OFF</div>
     </div>
 
-    <!-- MAIN MENU -->
     <section id="menu-home" aria-label="Star Interceptor main menu">
         <div class="menu-hero">
             <p class="menu-eyebrow">GAME FOR HACKATHON</p>
             <h1>Star <span>Interceptor</span></h1>
-            <p class="menu-description">
-                Pilot an agile starfighter through hazardous debris fields and alien armadas.
-                Dodge asteroids, explore deep space, and see how long you can survive.
-            </p>
-
+            <p class="menu-description">Pilot an agile starfighter through hazardous debris fields and alien armadas.
+                Dodge asteroids, explore deep space, and see how long you can survive.</p>
             <div class="menu-actions">
                 <button class="menu-action primary" id="start-game-btn">Play Game</button>
                 <button class="menu-action" id="about-game-btn">About</button>
             </div>
-
             <div class="menu-preview" aria-hidden="true">
                 <div></div>
                 <div></div>
@@ -552,74 +573,57 @@
         </div>
     </section>
 
-    <!-- NAVIGATION TOGGLE -->
     <button id="menu-toggle" aria-label="Open navigation menu" aria-expanded="false">
         <span></span><span></span><span></span>
     </button>
 
-    <!-- NAVIGATION OVERLAY -->
     <nav id="menu-overlay" aria-label="Game navigation" inert>
         <div class="menu-inner">
             <div class="menu-label">Navigation</div>
             <ul class="menu-nav">
                 <li class="menu-item">
-                    <div class="menu-link-wrap">
-                        <a href="#" class="menu-link" id="about-menu-link">About</a>
-                        <span class="menu-number">01</span>
-                    </div>
+                    <div class="menu-link-wrap"><a href="#" class="menu-link" id="about-menu-link">About</a><span
+                            class="menu-number">01</span></div>
                 </li>
                 <li class="menu-item">
-                    <div class="menu-link-wrap">
-                        <a href="#" class="menu-link" id="play-menu-link">Play</a>
-                        <span class="menu-number">02</span>
-                    </div>
+                    <div class="menu-link-wrap"><a href="#" class="menu-link" id="play-menu-link">Play</a><span
+                            class="menu-number">02</span></div>
                 </li>
             </ul>
         </div>
     </nav>
 
-    <!-- BACKGROUND LAYERS -->
     <div class="stars"></div>
     <div class="twinkling"></div>
     <div class="clouds"></div>
 
-    <!-- GAME OVER -->
     <div id="gameover-screen">
         <h1>GAME OVER</h1>
         <button id="restart-btn">Play Again</button>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/102/three.js"></script>
-
     <script>
+
+        // ================================================
+        // WEBCAM AND RED-COLOUR TRACKING
+        // ================================================
         const webcam = document.getElementById("Webcam");
         const video = document.getElementById("VElement");
+        const trackingStatus = document.getElementById("tracking-status");
 
-        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ video: true, audio: false })
-                .then(stream => {
-                    video.srcObject = stream;
-                    video.play();
-                })
-                .catch(() => {});
-        }
-
-        // RED OBJECT TRACKING
-        const trackingCanvas = document.createElement('canvas');
+        const trackingCanvas = document.createElement("canvas");
         trackingCanvas.width = 160;
         trackingCanvas.height = 120;
 
-        const trackingContext = trackingCanvas.getContext('2d', {
+        const trackingContext = trackingCanvas.getContext("2d", {
             willReadFrequently: true
         });
 
-        const webcamKeys = {
-            w: false,
-            a: false,
-            s: false,
-            d: false
-        };
+        const webcamKeys = { w: false, a: false, s: false, d: false };
 
+        let webcamStream = null;
+        let webcamStarting = false;
         let trackingFrameCounter = 0;
 
         function resetWebcamKeys() {
@@ -629,32 +633,80 @@
             webcamKeys.d = false;
         }
 
-        function updateRedTracking() {
-            trackingFrameCounter++;
+        async function startWebcam() {
+            webcam.style.display = "block";
 
-            if (trackingFrameCounter % 3 !== 0) {
+            if (webcamStream && video.srcObject === webcamStream) {
+                trackingStatus.textContent = "SHOW A RED OBJECT";
                 return;
             }
 
+            if (webcamStarting) return;
+            webcamStarting = true;
+            trackingStatus.textContent = "REQUESTING CAMERA...";
+
+            try {
+                if (!navigator.mediaDevices ||
+                    !navigator.mediaDevices.getUserMedia) {
+                    throw new Error("Camera needs HTTPS or localhost.");
+                }
+
+                webcamStream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        facingMode: "user",
+                        width: { ideal: 320 },
+                        height: { ideal: 240 }
+                    },
+                    audio: false
+                });
+
+                video.srcObject = webcamStream;
+                await video.play();
+                trackingStatus.textContent = "SHOW A RED OBJECT";
+            } catch (error) {
+                console.error("Webcam error:", error);
+                trackingStatus.textContent = "CAMERA BLOCKED";
+                webcamStream = null;
+            } finally {
+                webcamStarting = false;
+            }
+        }
+
+        function stopWebcam() {
+            if (webcamStream) {
+                webcamStream.getTracks().forEach(track => track.stop());
+            }
+
+            webcamStream = null;
+            video.srcObject = null;
+            webcam.style.display = "none";
+            trackingStatus.textContent = "CAMERA OFF";
+            resetWebcamKeys();
+        }
+
+        function updateRedTracking() {
+            trackingFrameCounter++;
+
+            // Process every third game frame to reduce CPU usage.
+            if (trackingFrameCounter % 3 !== 0) return;
+
             resetWebcamKeys();
 
-            if (!trackingContext || video.readyState < 2) {
+            if (!trackingContext ||
+                video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA ||
+                video.videoWidth === 0) {
+                if (webcam.style.display !== "none" && !webcamStarting) {
+                    trackingStatus.textContent = "WAITING FOR CAMERA";
+                }
                 return;
             }
 
             trackingContext.drawImage(
-                video,
-                0,
-                0,
-                trackingCanvas.width,
-                trackingCanvas.height
+                video, 0, 0, trackingCanvas.width, trackingCanvas.height
             );
 
             const imageData = trackingContext.getImageData(
-                0,
-                0,
-                trackingCanvas.width,
-                trackingCanvas.height
+                0, 0, trackingCanvas.width, trackingCanvas.height
             );
 
             const pixels = imageData.data;
@@ -664,39 +716,31 @@
             let totalBrightness = 0;
             let totalSamples = 0;
 
-            // Measure the overall lighting so red detection adapts
-            // to brighter and darker camera conditions.
+            // Adapt the detection threshold to the lighting.
             for (let y = 0; y < height; y += 2) {
                 for (let x = 0; x < width; x += 2) {
-                    const index = (y * width + x) * 4;
-
-                    const r = pixels[index];
-                    const g = pixels[index + 1];
-                    const b = pixels[index + 2];
-
-                    totalBrightness += Math.max(r, g, b) / 255;
+                    const i = (y * width + x) * 4;
+                    totalBrightness += Math.max(
+                        pixels[i], pixels[i + 1], pixels[i + 2]
+                    ) / 255;
                     totalSamples++;
                 }
             }
 
-            const averageBrightness = totalBrightness / totalSamples;
-            const brightnessThreshold = Math.max(
-                0.055,
-                averageBrightness * 0.4
-            );
+            const averageBrightness = totalBrightness / Math.max(1, totalSamples);
+            const brightnessThreshold = Math.max(0.055, averageBrightness * 0.4);
 
             let redPixels = 0;
             let totalX = 0;
             let totalY = 0;
 
-            // Find saturated red pixels.
+            // Detect pixels whose colour hue is close to red.
             for (let y = 0; y < height; y += 2) {
                 for (let x = 0; x < width; x += 2) {
-                    const index = (y * width + x) * 4;
-
-                    const r = pixels[index] / 255;
-                    const g = pixels[index + 1] / 255;
-                    const b = pixels[index + 2] / 255;
+                    const i = (y * width + x) * 4;
+                    const r = pixels[i] / 255;
+                    const g = pixels[i + 1] / 255;
+                    const b = pixels[i + 2] / 255;
 
                     const maxValue = Math.max(r, g, b);
                     const minValue = Math.min(r, g, b);
@@ -707,10 +751,7 @@
                     }
 
                     const saturation = difference / maxValue;
-
-                    if (saturation < 0.4) {
-                        continue;
-                    }
+                    if (saturation < 0.4) continue;
 
                     let hue = 0;
 
@@ -724,9 +765,7 @@
                         }
                     }
 
-                    if (hue < 0) {
-                        hue += 360;
-                    }
+                    if (hue < 0) hue += 360;
 
                     if (hue < 18 || hue > 342) {
                         redPixels++;
@@ -736,41 +775,52 @@
                 }
             }
 
-            // Ignore tiny red areas that are likely camera noise.
+            // Ignore tiny red areas that are probably noise.
             if (redPixels < 8) {
+                trackingStatus.textContent = "RED OBJECT NOT FOUND";
                 return;
             }
 
             const rawCenterX = (totalX / redPixels) / (width - 1);
             const centerY = (totalY / redPixels) / (height - 1);
 
-            // The video preview is mirrored, so mirror the tracking
-            // position too. This keeps left and right intuitive.
+            // Mirror X to match the mirrored webcam preview.
             const centerX = 1 - rawCenterX;
 
-            // Red object left = A, right = D.
-            // Center zone = no horizontal steering.
+            // Left/right steering.
             if (centerX < 0.4) {
                 webcamKeys.a = true;
             } else if (centerX > 0.6) {
                 webcamKeys.d = true;
             }
 
-            // Red object up = W, down = S.
-            // Center zone = no vertical steering.
+            // Up/down steering.
             if (centerY < 0.4) {
                 webcamKeys.w = true;
             } else if (centerY > 0.6) {
                 webcamKeys.s = true;
             }
+
+            trackingStatus.textContent =
+                "RED TRACKED • " +
+                (webcamKeys.a ? "LEFT " : "") +
+                (webcamKeys.d ? "RIGHT " : "") +
+                (webcamKeys.w ? "UP " : "") +
+                (webcamKeys.s ? "DOWN " : "");
+
+            if (!webcamKeys.a && !webcamKeys.d &&
+                !webcamKeys.w && !webcamKeys.s) {
+                trackingStatus.textContent = "RED TRACKED • CENTER";
+            }
         }
 
-        // SCENE SETUP
+        // ================================================
+        // THREE.JS SCENE
+        // ================================================
         let w = window.innerWidth;
         let h = window.innerHeight;
 
         const scene = new THREE.Scene();
-
         const camera = new THREE.PerspectiveCamera(75, w / h, 0.1, 1000);
         camera.position.set(0, 3, 10);
 
@@ -782,9 +832,7 @@
         renderer.setSize(w, h);
         document.body.appendChild(renderer.domElement);
 
-        // LIGHTING
-        const light = new THREE.AmbientLight("#ffffff", 1.5);
-        scene.add(light);
+        scene.add(new THREE.AmbientLight("#ffffff", 1.5));
 
         const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 1.5);
         hemiLight.position.set(0, 200, 0);
@@ -797,14 +845,23 @@
         // ASTEROID TEXTURES
         const textureLoader = new THREE.TextureLoader();
 
-        const tilesBaseColor = textureLoader.load('./picture/Cobblestone_Irregular_Floor_001_basecolor.png');
-        const tilesNormalMap = textureLoader.load('./picture/Cobblestone_Irregular_Floor_001_normal.png');
-        const tilesHeightMap = textureLoader.load('./picture/Cobblestone_Irregular_Floor_001_height.png');
-        const tilesRoughnessMap = textureLoader.load('./picture/Cobblestone_Irregular_Floor_001_roughness.png');
-        const tilesAmbientOcclusionMap = textureLoader.load('./picture/Cobblestone_Irregular_Floor_001_ambientOcclusion.png');
+        const tilesBaseColor = textureLoader.load(
+            "./picture/Cobblestone_Irregular_Floor_001_basecolor.png"
+        );
+        const tilesNormalMap = textureLoader.load(
+            "./picture/Cobblestone_Irregular_Floor_001_normal.png"
+        );
+        const tilesHeightMap = textureLoader.load(
+            "./picture/Cobblestone_Irregular_Floor_001_height.png"
+        );
+        const tilesRoughnessMap = textureLoader.load(
+            "./picture/Cobblestone_Irregular_Floor_001_roughness.png"
+        );
+        const tilesAmbientOcclusionMap = textureLoader.load(
+            "./picture/Cobblestone_Irregular_Floor_001_ambientOcclusion.png"
+        );
 
         const asteroidGeometry = new THREE.DodecahedronGeometry(5, 1);
-
         const asteroidMaterial = new THREE.MeshStandardMaterial({
             map: tilesBaseColor,
             normalMap: tilesNormalMap,
@@ -815,17 +872,15 @@
             aoMap: tilesAmbientOcclusionMap
         });
 
-        // GAME VARIABLES
         let asteroids = [];
         let spawnTimer = 0;
         const SPAWN_INTERVAL = 25;
         let isGameOver = false;
         let isInMenu = true;
 
-        // SPAWN ASTEROID
         function spawnAsteroid() {
             const mesh = new THREE.Mesh(asteroidGeometry, asteroidMaterial);
-            const scale = 1.5 + Math.random() * 2.0;
+            const scale = 1.5 + Math.random() * 2;
 
             mesh.scale.set(
                 scale * (0.8 + Math.random() * 0.4),
@@ -833,30 +888,25 @@
                 scale * (0.8 + Math.random() * 0.4)
             );
 
-            const u = Math.random();
-            const v = Math.random();
-            const theta = u * 2.0 * Math.PI;
-            const phi = Math.acos(2.0 * v - 1.0);
+            const theta = Math.random() * 2 * Math.PI;
+            const phi = Math.acos(2 * Math.random() - 1);
             const r = 200 + Math.random() * 100;
-
-            const cameraWorldPosition = new THREE.Vector3();
-            camera.getWorldPosition(cameraWorldPosition);
+            const cameraPosition = new THREE.Vector3();
+            camera.getWorldPosition(cameraPosition);
 
             mesh.position.set(
-                cameraWorldPosition.x + r * Math.sin(phi) * Math.cos(theta),
-                cameraWorldPosition.y + r * Math.sin(phi) * Math.sin(theta),
-                cameraWorldPosition.z + r * Math.cos(phi)
+                cameraPosition.x + r * Math.sin(phi) * Math.cos(theta),
+                cameraPosition.y + r * Math.sin(phi) * Math.sin(theta),
+                cameraPosition.z + r * Math.cos(phi)
             );
 
             scene.add(mesh);
 
-            const randomDirection = new THREE.Vector3(
+            const velocity = new THREE.Vector3(
                 Math.random() - 0.5,
                 Math.random() - 0.5,
                 Math.random() - 0.5
-            ).normalize();
-
-            const speed = 0.15 + Math.random() * 0.2;
+            ).normalize().multiplyScalar(0.15 + Math.random() * 0.2);
 
             const rotSpeed = new THREE.Vector3(
                 (Math.random() - 0.5) * 0.015,
@@ -864,67 +914,38 @@
                 (Math.random() - 0.5) * 0.015
             );
 
-            asteroids.push({
-                mesh,
-                velocity: randomDirection.multiplyScalar(speed),
-                rotSpeed,
-                age: 0,
-                maxAge: 3600
-            });
+            asteroids.push({ mesh, velocity, rotSpeed, age: 0, maxAge: 3600 });
         }
 
         // SHIP MATERIALS
         const mat = {
             hull: new THREE.MeshStandardMaterial({
-                color: 0x263746,
-                metalness: 0.8,
-                roughness: 0.32,
-                flatShading: true
+                color: 0x263746, metalness: 0.8, roughness: 0.32, flatShading: true
             }),
             armor: new THREE.MeshStandardMaterial({
-                color: 0x8799a5,
-                metalness: 0.75,
-                roughness: 0.3,
-                flatShading: true
+                color: 0x8799a5, metalness: 0.75, roughness: 0.3, flatShading: true
             }),
             dark: new THREE.MeshStandardMaterial({
-                color: 0x101a27,
-                metalness: 0.7,
-                roughness: 0.35,
-                flatShading: true
+                color: 0x101a27, metalness: 0.7, roughness: 0.35, flatShading: true
             }),
             gold: new THREE.MeshStandardMaterial({
-                color: 0xd9a45b,
-                metalness: 0.8,
-                roughness: 0.25,
-                flatShading: true
+                color: 0xd9a45b, metalness: 0.8, roughness: 0.25, flatShading: true
             }),
             glass: new THREE.MeshStandardMaterial({
-                color: 0x09263e,
-                emissive: 0x0874a0,
-                emissiveIntensity: 0.8,
-                metalness: 0.7,
-                roughness: 0.12,
-                flatShading: true
+                color: 0x09263e, emissive: 0x0874a0, emissiveIntensity: 0.8,
+                metalness: 0.7, roughness: 0.12, flatShading: true
             }),
             cyan: new THREE.MeshStandardMaterial({
-                color: 0x40f4ff,
-                emissive: 0x00dfff,
-                emissiveIntensity: 3
+                color: 0x40f4ff, emissive: 0x00dfff, emissiveIntensity: 3
             }),
             blue: new THREE.MeshStandardMaterial({
-                color: 0x286bff,
-                emissive: 0x164dff,
-                emissiveIntensity: 3
+                color: 0x286bff, emissive: 0x164dff, emissiveIntensity: 3
             }),
             red: new THREE.MeshStandardMaterial({
-                color: 0xff4266,
-                emissive: 0xff153d,
-                emissiveIntensity: 2
+                color: 0xff4266, emissive: 0xff153d, emissiveIntensity: 2
             })
         };
 
-        // SHIP SETUP
         const ship = new THREE.Group();
         scene.add(ship);
         ship.add(camera);
@@ -945,9 +966,7 @@
         function cyl(material, pos, top, bottom, height, sides = 8, rot = [0, 0, 0]) {
             return createMesh(
                 new THREE.CylinderGeometry(top, bottom, height, sides),
-                material,
-                pos,
-                rot
+                material, pos, rot
             );
         }
 
@@ -955,7 +974,6 @@
             const start = new THREE.Vector3(...a);
             const direction = new THREE.Vector3(...b).sub(start);
             const length = direction.length();
-
             if (!length) return;
 
             const mesh = new THREE.Mesh(
@@ -965,10 +983,8 @@
 
             mesh.position.copy(start).addScaledVector(direction, 0.5);
             mesh.quaternion.setFromUnitVectors(
-                new THREE.Vector3(0, 1, 0),
-                direction.normalize()
+                new THREE.Vector3(0, 1, 0), direction.normalize()
             );
-
             mesh.castShadow = mesh.receiveShadow = true;
             ship.add(mesh);
             return mesh;
@@ -976,7 +992,6 @@
 
         function wing(s) {
             const shape = new THREE.Shape();
-
             shape.moveTo(s * 0.45, -1.5);
             shape.lineTo(s * 4.5, -0.3);
             shape.lineTo(s * 5.5, 1.7);
@@ -986,48 +1001,37 @@
             shape.closePath();
 
             const geo = new THREE.ExtrudeGeometry(shape, {
-                depth: 0.24,
-                bevelEnabled: false
+                depth: 0.24, bevelEnabled: false
             });
-
             geo.rotateX(Math.PI / 2);
             geo.translate(0, 0.12, 0);
-
             createMesh(geo, mat.hull, [0, 0, 0]);
 
             beam(mat.armor, [s * 0.45, 0.04, -1.5], [s * 4.5, 0.04, -0.3], 0.07);
             beam(mat.gold, [s * 4.5, 0.04, -0.3], [s * 5.5, 0.04, 1.7], 0.035);
         }
 
-        // MAIN BODY
+        // MAIN SHIP BODY
         createMesh(
             new THREE.CylinderGeometry(0.28, 0.72, 5.1, 6),
-            mat.hull,
-            [0, 0, 0],
-            [Math.PI / 2, 0, 0]
+            mat.hull, [0, 0, 0], [Math.PI / 2, 0, 0]
         );
 
         createMesh(
             new THREE.ConeGeometry(0.48, 2, 6),
-            mat.armor,
-            [0, 0, -3.4],
-            [Math.PI / 2, 0, 0]
+            mat.armor, [0, 0, -3.4], [Math.PI / 2, 0, 0]
         );
 
         createMesh(
             new THREE.ConeGeometry(0.29, 1.05, 6),
-            mat.dark,
-            [0, 0, -4],
-            [Math.PI / 2, 0, 0]
+            mat.dark, [0, 0, -4], [Math.PI / 2, 0, 0]
         );
 
         box(mat.gold, [0, 0.12, -3.55], [0.1, 0.1, 0.85]);
 
         createMesh(
             new THREE.CylinderGeometry(0.3, 0.46, 2.7, 5),
-            mat.armor,
-            [0, 0.43, -0.65],
-            [Math.PI / 2, 0, 0]
+            mat.armor, [0, 0.43, -0.65], [Math.PI / 2, 0, 0]
         );
 
         box(mat.dark, [0, 0.67, 0.35], [0.76, 0.23, 1.65]);
@@ -1035,10 +1039,8 @@
 
         const cockpit = createMesh(
             new THREE.SphereGeometry(0.67, 6, 4),
-            mat.glass,
-            [0, 0.52, -1.72]
+            mat.glass, [0, 0.52, -1.72]
         );
-
         cockpit.scale.set(0.76, 0.58, 1.24);
 
         beam(mat.armor, [-0.42, 0.63, -2.15], [0, 0.84, -2.58], 0.035);
@@ -1087,32 +1089,27 @@
 
         cyl(mat.dark, [0, 0.94, 0.55], 0.06, 0.09, 0.55, 6);
         cyl(mat.gold, [0, 1.23, 0.55], 0.08, 0.08, 0.1, 6);
-
         beam(mat.armor, [0, 1.24, 0.55], [0, 1.95, 0.55]);
         beam(mat.armor, [-0.3, 1.63, 0.55], [0.3, 1.63, 0.55], 0.02);
 
         createMesh(
             new THREE.IcosahedronGeometry(0.09, 0),
-            mat.cyan,
-            [0, 1.98, 0.55]
+            mat.cyan, [0, 1.98, 0.55]
         );
 
         for (const s of [-1, 1]) {
             const fin = createMesh(
                 new THREE.ConeGeometry(0.35, 1.15, 4),
-                mat.armor,
-                [s * 0.53, 0.34, 2.22],
+                mat.armor, [s * 0.53, 0.34, 2.22],
                 [Math.PI / 2, 0, -s * 0.42]
             );
 
             fin.scale.set(0.65, 1, 1);
-
             beam(mat.gold, [s * 0.45, 0.3, 1.55], [s * 0.62, 0.76, 1.9], 0.025);
 
             createMesh(
                 new THREE.IcosahedronGeometry(0.075, 0),
-                mat.cyan,
-                [s * 0.62, 0.76, 1.9]
+                mat.cyan, [s * 0.62, 0.76, 1.9]
             );
 
             beam(mat.cyan, [s * 0.36, 0.06, -1], [s * 0.43, 0.06, 1.15], 0.025);
@@ -1126,12 +1123,14 @@
                 );
             }
 
-            cyl(mat.dark, [s * 0.56, 0.15, -1.25], 0.14, 0.18, 0.42, 6, [0, 0, Math.PI / 2]);
+            cyl(
+                mat.dark, [s * 0.56, 0.15, -1.25],
+                0.14, 0.18, 0.42, 6, [0, 0, Math.PI / 2]
+            );
 
             createMesh(
                 new THREE.IcosahedronGeometry(0.075, 0),
-                mat.cyan,
-                [s * 0.82, 0.15, -1.25]
+                mat.cyan, [s * 0.82, 0.15, -1.25]
             );
         }
 
@@ -1143,31 +1142,37 @@
         fill.position.set(5, -2, 3);
         scene.add(fill);
 
-        // PLAYER CONTROLS
-        const keys = {
-            w: false,
-            a: false,
-            s: false,
-            d: false
-        };
+        // ================================================
+        // KEYBOARD CONTROLS
+        // ================================================
+        const keys = { w: false, a: false, s: false, d: false };
 
-        window.addEventListener('keydown', (event) => {
+        window.addEventListener("keydown", event => {
             const key = event.key.toLowerCase();
             if (key in keys) keys[key] = true;
         });
 
-        window.addEventListener('keyup', (event) => {
+        window.addEventListener("keyup", event => {
             const key = event.key.toLowerCase();
             if (key in keys) keys[key] = false;
         });
 
-        // ANIMATION LOOP
+        function resetKeys() {
+            Object.keys(keys).forEach(key => {
+                keys[key] = false;
+            });
+        }
+
+        // ================================================
+        // MAIN ANIMATION LOOP
+        // ================================================
         function animate() {
             if (isGameOver || isInMenu) {
                 renderer.render(scene, camera);
                 return;
             }
 
+            // Webcam tracking updates while the game is active.
             updateRedTracking();
 
             spawnTimer++;
@@ -1181,11 +1186,9 @@
                 const asteroid = asteroids[i];
 
                 asteroid.mesh.position.add(asteroid.velocity);
-
                 asteroid.mesh.rotation.x += asteroid.rotSpeed.x;
                 asteroid.mesh.rotation.y += asteroid.rotSpeed.y;
                 asteroid.mesh.rotation.z += asteroid.rotSpeed.z;
-
                 asteroid.age++;
 
                 const asteroidCenter = new THREE.Vector3();
@@ -1210,77 +1213,98 @@
                 const cameraWorldPosition = new THREE.Vector3();
                 camera.getWorldPosition(cameraWorldPosition);
 
-                if (asteroid.age >= asteroid.maxAge ||
-                    asteroid.mesh.position.distanceTo(cameraWorldPosition) > 1500) {
+                if (
+                    asteroid.age >= asteroid.maxAge ||
+                    asteroid.mesh.position.distanceTo(cameraWorldPosition) > 1500
+                ) {
                     scene.remove(asteroid.mesh);
                     asteroids.splice(i, 1);
-                    continue;
                 }
             }
 
-            // Always move forward. Shift is no longer needed.
+
+            // The ship always moves forward.
             ship.translateZ(-1);
 
-            // Keep the same WASD rotations.
-            // Webcam tracking acts exactly like pressing those same keys.
+            // Keyboard and webcam inputs use the same controls.
             if (keys.w || webcamKeys.w) ship.rotateX(0.02);
             if (keys.a || webcamKeys.a) ship.rotateZ(0.02);
             if (keys.s || webcamKeys.s) ship.rotateX(-0.02);
             if (keys.d || webcamKeys.d) ship.rotateZ(-0.02);
 
+            // Move the star background continuously.
+            const starLayers = document.querySelectorAll(
+                ".stars, .twinkling, .clouds"
+            );
+
+            starLayers.forEach(layer => {
+                const speed = layer.classList.contains("stars") ? 1.5 :
+                    layer.classList.contains("twinkling") ? 2.5 : 0.8;
+
+                const currentX = Number(layer.dataset.offsetX || 0);
+                const currentY = Number(layer.dataset.offsetY || 0);
+
+                const nextX = currentX + speed;
+                const nextY = currentY + speed * 0.35;
+
+                layer.dataset.offsetX = nextX;
+                layer.dataset.offsetY = nextY;
+                layer.style.backgroundPosition =
+                    `${nextX}px ${nextY}px`;
+            });
+
             renderer.render(scene, camera);
         }
 
-        // GAME OVER
+        // ================================================
+        // GAME OVER AND RESTART
+        // ================================================
         function triggerGameOver() {
             isGameOver = true;
             resetWebcamKeys();
-            document.getElementById('gameover-screen').style.display = 'flex';
+            resetKeys();
+            document.getElementById("gameover-screen").style.display = "flex";
         }
 
         function restartGame() {
-            asteroids.forEach((asteroid) => scene.remove(asteroid.mesh));
+            asteroids.forEach(asteroid => scene.remove(asteroid.mesh));
 
             asteroids = [];
             spawnTimer = 0;
             isGameOver = false;
 
-            document.getElementById('gameover-screen').style.display = 'none';
+            document.getElementById("gameover-screen").style.display = "none";
             resetKeys();
             resetWebcamKeys();
         }
 
-        document.getElementById('restart-btn').addEventListener('click', restartGame);
+        document.getElementById("restart-btn").addEventListener("click", restartGame);
 
-        // MENU / GAME FLOW
-        const mainMenu = document.getElementById('menu-home');
-        const menuToggle = document.getElementById('menu-toggle');
-        const menuOverlay = document.getElementById('menu-overlay');
+        // ================================================
+        // MENU AND GAME FLOW
+        // ================================================
+        const mainMenu = document.getElementById("menu-home");
+        const menuToggle = document.getElementById("menu-toggle");
+        const menuOverlay = document.getElementById("menu-overlay");
 
-        const startGameButton = document.getElementById('start-game-btn');
-        const aboutGameButton = document.getElementById('about-game-btn');
+        const startGameButton = document.getElementById("start-game-btn");
+        const aboutGameButton = document.getElementById("about-game-btn");
 
-        const playMenuLink = document.getElementById('play-menu-link');
-        const aboutMenuLink = document.getElementById('about-menu-link');
+        const playMenuLink = document.getElementById("play-menu-link");
+        const aboutMenuLink = document.getElementById("about-menu-link");
 
         function setNavigationOpen(open) {
-            menuToggle.classList.toggle('is-open', open);
-            menuOverlay.classList.toggle('is-open', open);
+            menuToggle.classList.toggle("is-open", open);
+            menuOverlay.classList.toggle("is-open", open);
 
-            menuToggle.setAttribute('aria-expanded', String(open));
+            menuToggle.setAttribute("aria-expanded", String(open));
             menuToggle.setAttribute(
-                'aria-label',
-                open ? 'Close navigation menu' : 'Open navigation menu'
+                "aria-label",
+                open ? "Close navigation menu" : "Open navigation menu"
             );
 
-            menuOverlay.toggleAttribute('inert', !open);
-            document.body.style.overflow = open ? 'hidden' : '';
-        }
-
-        function resetKeys() {
-            Object.keys(keys).forEach((key) => {
-                keys[key] = false;
-            });
+            menuOverlay.toggleAttribute("inert", !open);
+            document.body.style.overflow = open ? "hidden" : "";
         }
 
         function startGame() {
@@ -1290,38 +1314,41 @@
             isInMenu = false;
             isGameOver = false;
 
-            webcam.style.display = 'block';
-
-            document.getElementById('gameover-screen').style.display = 'none';
-            menuToggle.style.display = 'flex';
+            document.getElementById("gameover-screen").style.display = "none";
+            menuToggle.style.display = "flex";
 
             resetKeys();
             resetWebcamKeys();
+
+            // Ask for camera permission only when the player starts the game.
+            startWebcam();
         }
 
         function returnToMainMenu() {
             isInMenu = true;
             isGameOver = false;
 
-            document.getElementById('gameover-screen').style.display = 'none';
+            document.getElementById("gameover-screen").style.display = "none";
 
             setNavigationOpen(false);
             mainMenu.hidden = false;
-            menuToggle.style.display = 'none';
-            webcam.style.display = 'none';
-            document.body.style.overflow = '';
+            menuToggle.style.display = "none";
+            document.body.style.overflow = "";
 
             resetKeys();
             resetWebcamKeys();
+
+            // Stop the camera when leaving gameplay.
+            stopWebcam();
         }
 
-        menuToggle.addEventListener('click', () => {
-            setNavigationOpen(!menuOverlay.classList.contains('is-open'));
+        menuToggle.addEventListener("click", () => {
+            setNavigationOpen(!menuOverlay.classList.contains("is-open"));
         });
 
-        startGameButton.addEventListener('click', startGame);
+        startGameButton.addEventListener("click", startGame);
 
-        playMenuLink.addEventListener('click', (event) => {
+        playMenuLink.addEventListener("click", event => {
             event.preventDefault();
             startGame();
         });
@@ -1330,40 +1357,38 @@
             setNavigationOpen(false);
 
             window.alert(
-                'Star Interceptor: pilot your starfighter, dodge incoming asteroids, and survive as long as you can. Use W, A, S, D or move a red object in front of your webcam to steer. Your ship always moves forward.'
+                "Star Interceptor: pilot your starfighter, dodge incoming asteroids, and survive as long as you can. Use W, A, S, D or move a red object in front of your webcam to steer. Your ship always moves forward."
             );
         }
 
-        aboutGameButton.addEventListener('click', showAbout);
+        aboutGameButton.addEventListener("click", showAbout);
 
-        aboutMenuLink.addEventListener('click', (event) => {
+        aboutMenuLink.addEventListener("click", event => {
             event.preventDefault();
             showAbout();
         });
 
-        window.addEventListener('keydown', (event) => {
-            if (event.key !== 'Escape') return;
+        window.addEventListener("keydown", event => {
+            if (event.key !== "Escape") return;
 
-            if (menuOverlay.classList.contains('is-open')) {
+            if (menuOverlay.classList.contains("is-open")) {
                 setNavigationOpen(false);
                 return;
             }
 
-            if (!mainMenu.hidden) {
-                return;
-            }
+            if (!mainMenu.hidden) return;
 
             returnToMainMenu();
         });
 
-        // START CLOSED
+        // Start with navigation closed.
         setNavigationOpen(false);
 
-        // START RENDERING
+        // Start rendering.
         renderer.setAnimationLoop(animate);
 
-        // RESIZE
-        window.addEventListener('resize', () => {
+        // Resize the game when the browser window changes size.
+        window.addEventListener("resize", () => {
             const width = window.innerWidth;
             const height = window.innerHeight;
 
@@ -1376,6 +1401,7 @@
             renderer.setSize(width, height);
         });
     </script>
+
 </body>
 
 </html>
