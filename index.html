@@ -496,6 +496,26 @@
             transform: scaleX(-1)
         }
 
+        #webcam-toggle {
+            position: fixed;
+            top: 150px;
+            left: 20px;
+            z-index: 100000;
+            display: none;
+            padding: 8px 12px;
+            border: 1px solid rgba(64, 244, 255, .7);
+            border-radius: 6px;
+            background: rgba(8, 10, 18, .85);
+            color: #40f4ff;
+            font: 700 12px 'DM Sans', sans-serif;
+            letter-spacing: 1px;
+            cursor: pointer
+        }
+
+        #webcam-toggle:hover {
+            background: rgba(20, 45, 65, .95)
+        }
+
         #tracking-status {
             display: none
         }
@@ -536,7 +556,7 @@
 
         #score-hud {
             position: fixed;
-            top: 20px;
+            top: 80px;
             right: 20px;
             z-index: 60;
             display: none;
@@ -579,9 +599,14 @@
             }
 
             #score-hud {
-                top: 65px;
+                top: 80px;
                 right: 12px;
                 font-size: 13px
+            }
+
+            #webcam-toggle {
+                top: 142px;
+                left: 10px
             }
         }
 
@@ -604,6 +629,7 @@
         <video autoplay muted playsinline id="VElement"></video>
         <div id="tracking-status">CAMERA OFF</div>
     </div>
+    <button id="webcam-toggle" type="button" aria-pressed="true">Webcam OFF</button>
 
     <section id="menu-home" aria-label="Starlight Interceptor main menu">
         <div class="menu-hero">
@@ -659,6 +685,7 @@
         const webcam = document.getElementById("Webcam");
         const video = document.getElementById("VElement");
         const trackingStatus = document.getElementById("tracking-status");
+        const webcamToggle = document.getElementById("webcam-toggle");
 
         const trackingCanvas = document.createElement("canvas");
         trackingCanvas.width = 160;
@@ -685,6 +712,8 @@
 
             if (webcamStream && video.srcObject === webcamStream) {
                 trackingStatus.textContent = "RED STEERS • BLUE SHOOTS";
+                webcamToggle.textContent = "Webcam OFF";
+                webcamToggle.setAttribute("aria-pressed", "true");
                 return;
             }
 
@@ -709,9 +738,13 @@
                 video.srcObject = webcamStream;
                 await video.play();
                 trackingStatus.textContent = "RED STEERS • BLUE SHOOTS";
+                webcamToggle.textContent = "Webcam OFF";
+                webcamToggle.setAttribute("aria-pressed", "true");
             } catch (error) {
                 console.error("Webcam error:", error);
                 trackingStatus.textContent = "CAMERA BLOCKED";
+                webcamToggle.textContent = "Webcam ON";
+                webcamToggle.setAttribute("aria-pressed", "false");
                 webcamStream = null;
             } finally {
                 webcamStarting = false;
@@ -725,6 +758,8 @@
             video.srcObject = null;
             webcam.style.display = "none";
             trackingStatus.textContent = "CAMERA OFF";
+            webcamToggle.textContent = "Webcam ON";
+            webcamToggle.setAttribute("aria-pressed", "false");
             webcamBlueDetected = false;
             keyboardShooting = false;
             isShooting = false;
@@ -1525,6 +1560,7 @@
 
             document.getElementById("gameover-screen").style.display = "none";
             menuToggle.style.display = "flex";
+            webcamToggle.style.display = "block";
             ammoHud.style.display = "block";
             document.getElementById("crosshair").style.display = "block";
             scoreHud.style.display = "block";
@@ -1556,6 +1592,7 @@
             setNavigationOpen(false);
             mainMenu.hidden = false;
             menuToggle.style.display = "none";
+            webcamToggle.style.display = "none";
             document.body.style.overflow = "";
 
             resetKeys();
@@ -1565,6 +1602,14 @@
 
         menuToggle.addEventListener("click", () => {
             setNavigationOpen(!menuOverlay.classList.contains("is-open"));
+        });
+
+        webcamToggle.addEventListener("click", () => {
+            if (webcamStream || webcamStarting) {
+                stopWebcam();
+            } else {
+                startWebcam();
+            }
         });
 
         startGameButton.addEventListener("click", startGame);
