@@ -907,13 +907,14 @@
 
                     if (hue < 0) hue += 360;
 
-                    const broadBlueHue = hue >= 160 && hue <= 285;
-                    const blueDominance = b > r * 1.02 && b > g * 0.72;
-                    const blueTint = b > 0.12 && b > r * 1.08 && b > g * 0.78;
+                    // Slightly stricter blue detection
+                    const broadBlueHue = hue >= 165 && hue <= 280;
+                    const blueDominance = b > r * 1.06 && b > g * 0.78;
+                    const blueTint = b > 0.14 && b > r * 1.12 && b > g * 0.84;
 
                     if (
                         broadBlueHue &&
-                        saturation > 0.08 &&
+                        saturation > 0.10 &&
                         (blueDominance || blueTint)
                     ) {
                         bluePixels++;
@@ -921,7 +922,7 @@
                 }
             }
 
-            webcamBlueDetected = bluePixels >= 12;
+            webcamBlueDetected = bluePixels >= 14;
             isShooting = keyboardShooting || webcamBlueDetected;
 
             if (webcamBlueDetected) {
