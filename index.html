@@ -65,6 +65,7 @@
         .twinkling {
             background: transparent url(twinkling.png) repeat top center;
             z-index: 1;
+            animation: move-twinkle-back 200s linear infinite
         }
 
         .clouds {
@@ -1166,6 +1167,7 @@
         // ================================================
         // MAIN ANIMATION LOOP
         // ================================================
+
         function animate() {
             if (isGameOver || isInMenu) {
                 renderer.render(scene, camera);
@@ -1231,27 +1233,6 @@
             if (keys.a || webcamKeys.a) ship.rotateZ(0.02);
             if (keys.s || webcamKeys.s) ship.rotateX(-0.02);
             if (keys.d || webcamKeys.d) ship.rotateZ(-0.02);
-
-            // Move the star background continuously.
-            const starLayers = document.querySelectorAll(
-                ".stars, .twinkling, .clouds"
-            );
-
-            starLayers.forEach(layer => {
-                const speed = layer.classList.contains("stars") ? 1.5 :
-                    layer.classList.contains("twinkling") ? 2.5 : 0.8;
-
-                const currentX = Number(layer.dataset.offsetX || 0);
-                const currentY = Number(layer.dataset.offsetY || 0);
-
-                const nextX = currentX + speed;
-                const nextY = currentY + speed * 0.35;
-
-                layer.dataset.offsetX = nextX;
-                layer.dataset.offsetY = nextY;
-                layer.style.backgroundPosition =
-                    `${nextX}px ${nextY}px`;
-            });
 
             renderer.render(scene, camera);
         }
