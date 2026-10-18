@@ -311,6 +311,7 @@
 
         const ship = new THREE.Group();
         scene.add(ship);
+        ship.add(camera);
 
         function createMesh(geo, material, pos, rot = [0, 0, 0], parent = ship) {
             const m = new THREE.Mesh(geo, material);
@@ -455,54 +456,75 @@
         fill.position.set(5, -2, 3);
         scene.add(fill);
 
-        // 5. GAME ENGINE ANIMATION LOOP
+        const keys = { w: false, a: false, s: false, d: false, shift: false };
+
+        window.addEventListener('keydown', (e) => {
+            const key = e.key.toLowerCase();
+            if (key in keys) keys[key] = true;
+        });
+
+        window.addEventListener('keyup', (e) => {
+            const key = e.key.toLowerCase();
+            if (key in keys) keys[key] = false;
+        });
+
         function animate() {
             if (isGameOver) return;
 
-            // Increment the spawn timer counter every frame
             spawnTimer++;
-            // Check if enough frames have passed to spawn a new asteroid
             if (spawnTimer >= SPAWN_INTERVAL) {
-                spawnAsteroid(); // Call function to spawn a rock
-                spawnTimer = 0;  // Reset timer back to zero
+                spawnAsteroid();
+                spawnTimer = 0;
             }
 
-            // --- ASTEROID LIFECYCLE & MOVEMENT MANAGEMENT ---
             for (let i = asteroids.length - 1; i >= 0; i--) {
                 const asteroid = asteroids[i];
 
-                // Add velocity vector to update the asteroid's position each frame
                 asteroid.mesh.position.add(asteroid.velocity);
 
-                // Apply tumbling rotation increments to X, Y, and Z axes
                 asteroid.mesh.rotation.x += asteroid.rotSpeed.x;
                 asteroid.mesh.rotation.y += asteroid.rotSpeed.y;
                 asteroid.mesh.rotation.z += asteroid.rotSpeed.z;
 
-                // Increment the individual asteroid's frame age counter
                 asteroid.age++;
 
-                // Collision check with ship / camera position
-                if (asteroid.mesh.position.distanceTo(camera.position) < 6.0) {
+                const asteroidCenter = new THREE.Vector3();
+                asteroid.mesh.getWorldPosition(asteroidCenter);
+
+                const shipCenter = new THREE.Vector3();
+                ship.getWorldPosition(shipCenter);
+
+                const asteroidRadius = 5 * Math.max(
+                    asteroid.mesh.scale.x,
+                    asteroid.mesh.scale.y,
+                    asteroid.mesh.scale.z
+                );
+
+                const shipRadius = 4.5;
+
+                if (asteroidCenter.distanceTo(shipCenter) < asteroidRadius + shipRadius) {
                     triggerGameOver();
                     break;
                 }
 
-                // Time-based cleanup: delete the asteroid if it has existed for 1 full minute (3600 frames)
                 if (asteroid.age >= asteroid.maxAge) {
-                    scene.remove(asteroid.mesh); // Remove mesh from Three.js scene
-                    asteroids.splice(i, 1);    // Remove item from tracking array
+                    scene.remove(asteroid.mesh);
+                    asteroids.splice(i, 1);
                     continue;
                 }
 
-                // Distance-based backup cleanup: if an asteroid drifts past 1500 units, delete it
                 if (asteroid.mesh.position.distanceTo(camera.position) > 1500) {
-                    scene.remove(asteroid.mesh); // Remove mesh from Three.js scene
-                    asteroids.splice(i, 1);    // Remove item from tracking array
+                    scene.remove(asteroid.mesh);
+                    asteroids.splice(i, 1);
                 }
             }
 
-            // Render the 3D scene from the perspective of the camera
+            if (keys.shift) ship.translateZ(-1);
+            if (keys.w) ship.rotateX(0.02);
+            if (keys.a) ship.rotateZ(0.02);
+            if (keys.s) ship.rotateX(-0.02);
+            if (keys.d) ship.rotateZ(-0.02);
+
             renderer.render(scene, camera);
         }
 
@@ -512,7 +534,7 @@
         }
 
         function restartGame() {
-            // Remove active asteroids from scene and clear memory
+
             for (let i = 0; i < asteroids.length; i++) {
                 scene.remove(asteroids[i].mesh);
             }
@@ -520,24 +542,19 @@
             spawnTimer = 0;
             isGameOver = false;
 
-            // Hide Game Over screen
             document.getElementById('gameover-screen').style.display = 'none';
         }
 
-        // Event listener for Play Again button
         document.getElementById('restart-btn').addEventListener('click', restartGame);
 
-        // Test trigger: Press 'T' to spawn an asteroid directly in front of the ship
         window.addEventListener('keydown', (event) => {
             if (event.key === 't' || event.key === 'T') {
                 const mesh = new THREE.Mesh(asteroidGeometry, asteroidMaterial);
 
-                // Place it 35 units directly in front of the camera/ship
                 mesh.position.set(camera.position.x, camera.position.y, camera.position.z - 35);
                 mesh.scale.set(3, 3, 3);
                 scene.add(mesh);
 
-                // Send it straight at the ship fast
                 const targetDirection = new THREE.Vector3().subVectors(camera.position, mesh.position).normalize();
 
                 asteroids.push({
@@ -550,18 +567,15 @@
             }
         });
 
-        // Start animation loop
         renderer.setAnimationLoop(animate);
 
-        // Event listener to dynamically update aspect ratio and renderer size if window is resized
         window.addEventListener('resize', () => {
             const width = window.innerWidth;
             const height = window.innerHeight;
-            camera.aspect = width / height;   // Update camera aspect ratio
-            camera.updateProjectionMatrix();  // Apply changes to camera projection matrix
-            renderer.setSize(width, height);  // Resize renderer viewport dimensions
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
         });
     </script>
 </body>
-
 </html>
